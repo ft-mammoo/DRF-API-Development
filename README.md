@@ -27,7 +27,7 @@ This project deliberately walks through the 5 levels of DRF view abstraction to 
 
 **1. Clone the repository**
 ```bash
-git clone [https://github.com/ft-mammoo/DRF-API-Development.git](https://github.com/ft-mammoo/DRF-API-Development.git)
+git clone https://github.com/ft-mammoo/DRF-API-Development.git
 cd DRF-API-Development
 ```
 
