@@ -5,9 +5,10 @@ from .serializers import StudentSerializer, EmployeeSerializer
 #from rest_framework import status
 #from rest_framework.decorators import api_view
 #from rest_framework.views import APIView
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
-from rest_framework.generics import GenericAPIView
 #from django.http import Http404
+# from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
+# from rest_framework.generics import GenericAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView,ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 '''
 Function based views
@@ -93,48 +94,69 @@ Class based views
 '''
 Mixins
 '''
-class Students(ListModelMixin, CreateModelMixin, GenericAPIView):
+# class Students(ListModelMixin, CreateModelMixin, GenericAPIView):
+#     queryset = Student.objects.all()
+#     serializer_class = StudentSerializer
+
+#     def get(self, request):
+#         return self.list(request)
+    
+#     def post(self, request):
+#         return self.create(request)
+    
+# class StudentDetail(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+#     queryset = Student.objects.all()
+#     serializer_class = StudentSerializer
+
+#     def get(self, request, pk):
+#         return self.retrieve(request, pk)
+    
+#     def put(self, request, pk):
+#         return self.update(request, pk)
+    
+#     def delete(self, request, pk):
+#         return self.destroy(request, pk)
+
+# class Employees(ListModelMixin, CreateModelMixin, GenericAPIView):
+#     queryset = Employee.objects.all()
+#     serializer_class = EmployeeSerializer
+
+#     def get(self, request):
+#         return self.list(request)
+    
+#     def post(self, request):
+#         return self.create(request)
+    
+# class EmployeeDetail(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+#     queryset = Employee.objects.all()
+#     serializer_class = EmployeeSerializer
+
+#     def get(self, request, pk):
+#         return self.retrieve(request, pk)
+    
+#     def put(self, request, pk):
+#         return self.update(request, pk)
+    
+#     def delete(self, request, pk):
+#         return self.destroy(request, pk)
+
+'''
+Generic Views
+'''
+class Students(ListAPIView, CreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
-    def get(self, request):
-        return self.list(request)
-    
-    def post(self, request):
-        return self.create(request)
-    
-class StudentDetail(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+class StudentDetail(RetrieveAPIView, UpdateAPIView, DestroyAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    lookup_field = 'pk'
 
-    def get(self, request, pk):
-        return self.retrieve(request, pk)
-    
-    def put(self, request, pk):
-        return self.update(request, pk)
-    
-    def delete(self, request, pk):
-        return self.destroy(request, pk)
-
-class Employees(ListModelMixin, CreateModelMixin, GenericAPIView):
+class Employees(ListCreateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
-    def get(self, request):
-        return self.list(request)
-    
-    def post(self, request):
-        return self.create(request)
-    
-class EmployeeDetail(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+class EmployeeDetail(RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-
-    def get(self, request, pk):
-        return self.retrieve(request, pk)
-    
-    def put(self, request, pk):
-        return self.update(request, pk)
-    
-    def delete(self, request, pk):
-        return self.destroy(request, pk)
+    lookup_field = 'pk'
