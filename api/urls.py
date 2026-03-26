@@ -5,6 +5,8 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register('students', views.StudentViewSet, basename='student')
 router.register('employees', views.EmployeeViewSet)
+router.register('blogs', views.BlogViewSet)
+router.register('comments', views.CommentViewSet)
 
 urlpatterns = [
     #Function based views
