@@ -200,7 +200,7 @@ class EmployeeViewSet(ModelViewSet):
     serializer_class = EmployeeSerializer
 
 class BlogViewSet(ModelViewSet):
-    queryset = Blog.objects.all()
+    queryset = Blog.objects.prefetch_related('comments')
     serializer_class = BlogSerializer
 
 class CommentViewSet(ModelViewSet):
