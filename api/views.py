@@ -1,14 +1,16 @@
 from students.models import Student
 from employees.models import Employee
 from .serializers import StudentSerializer, EmployeeSerializer
-#from rest_framework.response import Response
-#from rest_framework import status
+from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
 #from rest_framework.decorators import api_view
 #from rest_framework.views import APIView
 #from django.http import Http404
 # from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 # from rest_framework.generics import GenericAPIView
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView,ListCreateAPIView, RetrieveUpdateDestroyAPIView
+#from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView,ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ViewSet, ModelViewSet
 
 '''
 Function based views
@@ -143,20 +145,54 @@ Mixins
 '''
 Generic Views
 '''
-class Students(ListAPIView, CreateAPIView):
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
+# class Students(ListAPIView, CreateAPIView):
+#     queryset = Student.objects.all()
+#     serializer_class = StudentSerializer
 
-class StudentDetail(RetrieveAPIView, UpdateAPIView, DestroyAPIView):
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
-    lookup_field = 'pk'
+# class StudentDetail(RetrieveAPIView, UpdateAPIView, DestroyAPIView):
+#     queryset = Student.objects.all()
+#     serializer_class = StudentSerializer
+#     lookup_field = 'pk'
 
-class Employees(ListCreateAPIView):
+# class Employees(ListCreateAPIView):
+#     queryset = Employee.objects.all()
+#     serializer_class = EmployeeSerializer
+
+# class EmployeeDetail(RetrieveUpdateDestroyAPIView):
+#     queryset = Employee.objects.all()
+#     serializer_class = EmployeeSerializer
+#     lookup_field = 'pk'
+
+'''
+ViewSets
+'''
+class StudentViewSet(ViewSet):
+    def list(self, request):
+        students = Student.objects.all()
+        serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def create(self, request):
+        serializer = StudentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def retrieve(self, request, pk=None):
+        student = get_object_or_404(Student, pk=pk)
+        serializer = StudentSerializer(student)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def update(self, request, pk=None):
+        student = get_object_or_404(Student, pk=pk)
+        serializer = StudentSerializer(student, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def destroy(self, request, pk=None):
+        student = get_object_or_404(Student, pk=pk)
+        student.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class EmployeeViewSet(ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-
-class EmployeeDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
-    lookup_field = 'pk'
