@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 # from rest_framework.generics import GenericAPIView
 #from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView,ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ViewSet, ModelViewSet
+from .paginations import CustomPageNumberPagination
 
 '''
 Function based views
@@ -171,8 +172,10 @@ ViewSets
 class StudentViewSet(ViewSet):
     def list(self, request):
         students = Student.objects.all()
-        serializer = StudentSerializer(students, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = CustomPageNumberPagination()
+        paginated_students = paginator.paginate_queryset(students, request)
+        serializer = StudentSerializer(paginated_students, many=True)
+        return paginator.get_paginated_response(serializer.data)
     def create(self, request):
         serializer = StudentSerializer(data=request.data)
         if serializer.is_valid():
@@ -198,6 +201,7 @@ class StudentViewSet(ViewSet):
 class EmployeeViewSet(ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    pagination_class = CustomPageNumberPagination
 
 class BlogViewSet(ModelViewSet):
     queryset = Blog.objects.prefetch_related('comments')
