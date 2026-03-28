@@ -16,6 +16,7 @@ from rest_framework.viewsets import ViewSet, ModelViewSet
 from .paginations import CustomPageNumberPagination
 from .filters import EmployeeFilter
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 '''
 Function based views
@@ -207,6 +208,7 @@ class EmployeeViewSet(ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     pagination_class = CustomPageNumberPagination
+    filter_backends = [DjangoFilterBackend]
     filterset_class = EmployeeFilter
 
 class BlogViewSet(ModelViewSet):
