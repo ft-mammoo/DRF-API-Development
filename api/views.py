@@ -14,6 +14,7 @@ from django.shortcuts import get_object_or_404
 #from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView,ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from .paginations import CustomPageNumberPagination
+from .filters import EmployeeFilter
 
 '''
 Function based views
@@ -205,7 +206,7 @@ class EmployeeViewSet(ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     pagination_class = CustomPageNumberPagination
-    filterset_fields = ['designation']
+    filterset_class = EmployeeFilter
 
 class BlogViewSet(ModelViewSet):
     queryset = Blog.objects.prefetch_related('comments')
