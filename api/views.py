@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from .paginations import CustomPageNumberPagination
 from .filters import EmployeeFilter
+from rest_framework.filters import SearchFilter
 
 '''
 Function based views
@@ -211,6 +212,8 @@ class EmployeeViewSet(ModelViewSet):
 class BlogViewSet(ModelViewSet):
     queryset = Blog.objects.prefetch_related('comments')
     serializer_class = BlogSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['title', 'content']    
 
 class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
