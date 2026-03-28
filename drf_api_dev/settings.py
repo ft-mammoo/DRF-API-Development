@@ -134,4 +134,5 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
     'SEARCH_PARAM': 'q',
+    'ORDERING_PARAM': 'sort',
 }
