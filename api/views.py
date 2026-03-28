@@ -205,6 +205,7 @@ class EmployeeViewSet(ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     pagination_class = CustomPageNumberPagination
+    filterset_fields = ['designation']
 
 class BlogViewSet(ModelViewSet):
     queryset = Blog.objects.prefetch_related('comments')
