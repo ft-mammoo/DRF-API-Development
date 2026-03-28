@@ -208,8 +208,10 @@ class EmployeeViewSet(ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     pagination_class = CustomPageNumberPagination
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = EmployeeFilter
+    search_fields = ['emp_name', 'designation']
+    ordering_fields = ['emp_id', 'emp_name']
 
 class BlogViewSet(ModelViewSet):
     queryset = Blog.objects.prefetch_related('comments')
