@@ -174,8 +174,11 @@ class StudentViewSet(ViewSet):
         students = Student.objects.all()
         paginator = CustomPageNumberPagination()
         paginated_students = paginator.paginate_queryset(students, request)
-        serializer = StudentSerializer(paginated_students, many=True)
-        return paginator.get_paginated_response(serializer.data)
+        if paginated_students is not None:
+            serializer = StudentSerializer(paginated_students, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     def create(self, request):
         serializer = StudentSerializer(data=request.data)
         if serializer.is_valid():
