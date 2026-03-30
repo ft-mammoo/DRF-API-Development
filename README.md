@@ -13,21 +13,27 @@ This codebase is designed as the underlying data layer template for future Full-
 * **Database:** SQLite (Development)
 
 ## Architectural Evolution Roadmap
-This project deliberately walks through the 5 levels of DRF view abstraction to demonstrate the "why" behind the framework's design patterns:
+This project deliberately walks through the 5 levels of DRF view abstraction to demonstrate the "why" behind the framework's design patterns. All phases are completed and documented in `api/views.py`:
 
 - [x] **Phase 1: Infrastructure Setup** (Environment config, DRF installation, API client setup)
 - [x] **Phase 2: Data Serialization** (Mapping database models to JSON via `ModelSerializer`)
 - [x] **Phase 3.1: Function-Based Views (FBVs)** (Explicit HTTP verb routing using `@api_view`)
-- [ ] **Phase 3.2: Class-Based Views (CBVs)** (Object-oriented method routing via `APIView`)
-- [ ] **Phase 3.3: Mixins** (Applying DRY principles with pre-built CRUD operations)
-- [ ] **Phase 3.4: Generics** (`GenericAPIView` for rapid standard endpoint generation)
-- [ ] **Phase 3.5: ViewSets & Routers** (Automated URL wiring and comprehensive database logic)
+- [x] **Phase 3.2: Class-Based Views (CBVs)** (Object-oriented method routing via `APIView`)
+- [x] **Phase 3.3: Mixins** (Applying DRY principles with pre-built CRUD operations)
+- [x] **Phase 3.4: Generics** (`GenericAPIView` for rapid standard endpoint generation)
+- [x] **Phase 3.5: ViewSets & Routers** (Automated URL wiring and comprehensive database logic via `ModelViewSet`)
+
+## Advanced Implementations
+Beyond standard CRUD, this repository implements production-level API features:
+* **Custom Pagination:** Implemented `CustomPageNumberPagination` to standardize API response payloads with next/previous links and total counts.
+* **Dynamic Filtering & Searching:** Utilized `django_filters` alongside DRF's `SearchFilter` and `OrderingFilter` for robust endpoint querying (e.g., filtering employees by designation).
+* **Query Optimization:** Implemented `prefetch_related` on nested serializers (Blogs & Comments) to prevent N+1 query performance bottlenecks.
 
 ## Local Setup & Installation
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/ft-mammoo/DRF-API-Development.git
+git clone [https://github.com/ft-mammoo/DRF-API-Development.git](https://github.com/ft-mammoo/DRF-API-Development.git)
 cd DRF-API-Development
 ```
 
@@ -58,18 +64,19 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-## Current Application Structure
+## Application Structure
 * `drf_api_dev/`: The core project configuration folder containing main URL routing and settings.
-* `students/`: The foundation app holding the `Student` database model and basic Django web views.
-* `api/`: The dedicated DRF application layer. Currently contains Function-Based Views (FBVs) handling explicit CRUD logic, 404 handling, and the `StudentSerializer`.
-* `employees/`: *(In Progress)* The sandbox for refactoring into Class-Based Views (CBVs) for cleaner HTTP verb separation.
+* `api/`: The dedicated DRF application layer. Contains the centralized ViewSets, custom pagination rules, filtering logic, and API router configurations.
+* `students/`: Foundation app demonstrating baseline model serialization.
+* `employees/`: Demonstrates advanced filtering, searching, and ordering using `django-filters`.
+* `blogs/`: Demonstrates one-to-many database relationships (Blogs to Comments) and nested serializers.
 
 ## API Endpoints (Development)
-**Base URL:** `http://127.0.0.1:8000/`
+**Base URL:** `http://127.0.0.1:8000/api/v1/`
 
-**Students API (v1)**
-* `GET /api/v1/students/` - Retrieve all students.
-* `POST /api/v1/students/` - Create a new student record.
-* `GET /api/v1/students/<pk>/` - Retrieve a specific student by ID.
-* `PUT /api/v1/students/<pk>/` - Update a specific student's record.
-* `DELETE /api/v1/students/<pk>/` - Delete a student record.
+All endpoints below are handled automatically via DRF `DefaultRouter` and support standard `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` methods.
+
+* `/students/` - Manage student records.
+* `/employees/` - Manage employee records (Supports `?search=`, `?ordering=`, and custom filters).
+* `/blogs/` - Manage blog posts (Returns nested comment data).
+* `/comments/` - Manage individual blog comments.
