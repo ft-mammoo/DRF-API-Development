@@ -1,5 +1,10 @@
 # Django REST Framework (DRF) Architecture Playbook
 
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
+![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+
 ## Overview
 This repository serves as a foundational engineering playbook for building scalable backend APIs with the Django REST Framework. It tracks the architectural evolution of a backend system from basic routing to highly abstracted, production-ready ViewSets. 
 
@@ -9,7 +14,6 @@ This codebase is designed as the underlying data layer template for future Full-
 * **Language:** Python 3.x
 * **Framework:** Django 5.2.12
 * **API Framework:** Django REST Framework (DRF) 3.16.1
-* **API Testing Client:** Postman
 * **Database:** SQLite (Development)
 
 ## Architectural Evolution Roadmap
@@ -28,6 +32,9 @@ Beyond standard CRUD, this repository implements production-level API features:
 * **Custom Pagination:** Implemented `CustomPageNumberPagination` to standardize API response payloads with next/previous links and total counts.
 * **Dynamic Filtering & Searching:** Utilized `django_filters` alongside DRF's `SearchFilter` and `OrderingFilter` for robust endpoint querying (e.g., filtering employees by designation).
 * **Query Optimization:** Implemented `prefetch_related` on nested serializers (Blogs & Comments) to prevent N+1 query performance bottlenecks.
+
+## Testing & Validation
+All API endpoints, including nested relationships, pagination loops, and dynamic filtering parameters, have been rigorously tested and validated using **Postman** to ensure accurate HTTP status codes and JSON payload structures.
 
 ## Local Setup & Installation
 
