@@ -10,6 +10,9 @@ This repository serves as a foundational engineering playbook for building scala
 
 This codebase is designed as the underlying data layer template for future Full-Stack applications, including EdTech platforms and Machine Learning integrations.
 
+## System Architecture
+![DRF Architecture Flow](./assets/architecture_flow.png)
+
 ## Tech Stack
 * **Language:** Python 3.x
 * **Framework:** Django 5.2.12
